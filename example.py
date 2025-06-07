@@ -27,7 +27,7 @@ if not API_KEY:
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s: %(message)s",
-    datefmt="%H:%M:%S"
+    datefmt="%H:%M:%S",
 )
 
 
@@ -44,7 +44,7 @@ def ask_openai(prompt: str, model: str = "gpt-3.5-turbo") -> str:
             model=model,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user",   "content": prompt}
+                {"role": "user", "content": prompt},
             ],
         )
         return resp.choices[0].message.content or ""
@@ -83,9 +83,9 @@ def main():
 
     record = {
         "timestamp": datetime.utcnow().isoformat(),
-        "model":     args.model,
-        "prompt":    args.prompt,
-        "response":  reply,
+        "model": args.model,
+        "prompt": args.prompt,
+        "response": reply,
     }
     with open("conversation_log.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False))

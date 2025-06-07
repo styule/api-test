@@ -1,43 +1,42 @@
-import os
-import sys
-
-# ─── allow importing example.py by adding the repo root to sys.path ───
-sys.path.insert(0, os.getcwd())
-
+# tests/test_example.py
 import pytest
+
 from example import ask_openai, client
 
 
 class DummyResponse:
-    class Choice:
-        def __init__(self, text):
-            self.message = type("M", (), {"content": text})
+    """Mock OpenAI response object with a single choice."""
 
-    def __init__(self, text):
-        self.choices = [DummyResponse.Choice(text)]
+    class Choice:
+        def __init__(self, content):
+            # emulate the `.message.content` structure
+            self.message = type("M", (), {"content": content})
+
+    def __init__(self, content):
+        self.choices = [DummyResponse.Choice(content)]
 
 
 def test_ask_openai_success(monkeypatch):
-    """ask_openai returns the assistant's reply on success."""
+    """ask_openai returns the assistant’s reply on success."""
     monkeypatch.setattr(
         client.chat.completions,
         "create",
-        lambda model, messages: DummyResponse("mock reply"),
+        lambda **kwargs: DummyResponse("mock reply"),
     )
     assert ask_openai("hello") == "mock reply"
 
 
 def test_ask_openai_error(monkeypatch):
-    """ask_openai exits on API errors."""
+    """ask_openai calls sys.exit on API errors."""
     from openai import OpenAIError
 
-    def raise_err(model, messages):
+    def raise_error(**kwargs):
         raise OpenAIError("boom")
 
     monkeypatch.setattr(
         client.chat.completions,
         "create",
-        raise_err,
+        raise_error,
     )
     with pytest.raises(SystemExit):
-        ask_openai("will error")
+        ask_openai("this will error")
