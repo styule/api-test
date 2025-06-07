@@ -32,8 +32,9 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          # runtime deps
           pip install -r requirements.txt
-          # If you followed the suggestion and created requirements-dev.txt:
+          # dev deps
           pip install -r requirements-dev.txt
 
       # 5. Lint your code
