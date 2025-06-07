@@ -2,7 +2,7 @@
 """
 example.py  
 A CLI tool that sends a prompt to OpenAI, prints the assistant’s reply,
-and appends the exchange to conversation_log.jsonl.
+and appends the exchange to conversation_log.jsonl but needs more work.
 """
 
 import os
