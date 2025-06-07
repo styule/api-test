@@ -1,5 +1,10 @@
-import pytest
+import os
+import sys
 
+# ─── allow importing example.py by adding the repo root to sys.path ───
+sys.path.insert(0, os.getcwd())
+
+import pytest
 from example import ask_openai, client
 
 
@@ -13,14 +18,13 @@ class DummyResponse:
 
 
 def test_ask_openai_success(monkeypatch):
-    """ask_openai returns the assistant's reply when the API call succeeds."""
+    """ask_openai returns the assistant's reply on success."""
     monkeypatch.setattr(
         client.chat.completions,
         "create",
         lambda model, messages: DummyResponse("mock reply"),
     )
-    result = ask_openai("hello")
-    assert result == "mock reply"
+    assert ask_openai("hello") == "mock reply"
 
 
 def test_ask_openai_error(monkeypatch):

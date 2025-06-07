@@ -1,0 +1,10 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 25.1.0                # pin to a real, immutable release
+    hooks:
+      - id: black
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.2.0                 # match your requirements-dev.txt
+    hooks:
+      - id: flake8
