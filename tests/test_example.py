@@ -1,18 +1,18 @@
 # tests/test_example.py
+
 import pytest
 
 from example import ask_openai, client
 
 
 class DummyResponse:
-    """Mock OpenAI response object with a single choice."""
+    """Mimic the shape of an OpenAI ChatCompletion response."""
 
     class Choice:
-        def __init__(self, content):
-            # emulate the `.message.content` structure
+        def __init__(self, content: str) -> None:
             self.message = type("M", (), {"content": content})
 
-    def __init__(self, content):
+    def __init__(self, content: str) -> None:
         self.choices = [DummyResponse.Choice(content)]
 
 
@@ -21,22 +21,22 @@ def test_ask_openai_success(monkeypatch):
     monkeypatch.setattr(
         client.chat.completions,
         "create",
-        lambda **kwargs: DummyResponse("mock reply"),
+        lambda *_, **__: DummyResponse("mock reply"),
     )
     assert ask_openai("hello") == "mock reply"
 
 
 def test_ask_openai_error(monkeypatch):
-    """ask_openai calls sys.exit on API errors."""
+    """ask_openai exits with SystemExit on API errors."""
     from openai import OpenAIError
 
-    def raise_error(**kwargs):
+    def raise_err(*_: object, **__: object) -> None:
         raise OpenAIError("boom")
 
     monkeypatch.setattr(
         client.chat.completions,
         "create",
-        raise_error,
+        raise_err,
     )
     with pytest.raises(SystemExit):
-        ask_openai("this will error")
+        ask_openai("will error")

@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: "dummy-key-for-ci"   # <-- new
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
