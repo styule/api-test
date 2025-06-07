@@ -1,5 +1,0 @@
-# Ignore the Python virtual environment folder
-.venv/
-
-# Ignore environment-variable file with your secret key
-.env
