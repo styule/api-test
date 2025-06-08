@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ask Steve: Multi-Agent Blog Generator</title>
+    <title>Ask Steve: Multi-Agent AI Assistant</title>
+    <!-- Meta tags for better security and SEO -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7fa; }
-        .container { max-width: 700px; margin: 2.5em auto; background: #fff; 
+        .container { max-width: 700px; margin: 2.5em auto; background: #fff;
             padding: 2em 2.5em 2em 2.5em; border-radius: 12px; box-shadow: 0 0 18px #d1d1e6; }
         h1 { text-align: center; font-size: 2.4em; margin-bottom: 0.3em; }
         .subtitle { text-align: center; color: #4747a1; font-size: 1.1em; margin-bottom: 1.8em; }
@@ -17,9 +21,10 @@
         button:hover { background: #373783; }
         .howto { background: #f3f6fa; padding: 1em 1em 0.7em 1em; border-radius: 7px;
             color: #373783; font-size: 1em; margin-bottom: 2em; text-align: center; }
+        .security { font-size: 0.98em; color: #c44; margin-bottom: 1.5em; text-align: center; }
         .result { margin-top: 2em; background: #f9f9ff; padding: 1.5em; border-radius: 9px; }
         .result h2 { margin-top: 0; font-size: 1.2em; color: #4747a1; }
-        textarea { width: 100%; height: 13em; font-size: 1em; padding: 1em; 
+        textarea { width: 100%; height: 13em; font-size: 1em; padding: 1em;
             border-radius: 6px; border: 1px solid #c3c3d1; resize: vertical; }
         footer { margin-top: 3em; text-align: center; color: #9696a7; font-size: 0.98em; }
     </style>
@@ -27,27 +32,34 @@
 <body>
 <div class="container">
     <h1>Ask Steve</h1>
-    <div class="subtitle">Multi-Agent AI Blog Generator</div>
+    <div class="subtitle">Multi-Agent AI Assistant</div>
     <div class="howto">
         <b>How to use:</b><br>
-        Type any topic or question (from “What is quantum computing?” to “Write a story about a brave cat”) and hit Generate. <br>
-        Steve’s team of AI agents will research and compose a full blog post for you!
+        Type <b>any question, request, or topic</b> for Steve.<br>
+        Example: "What is quantum computing?", "Define 'serendipity'",<br>
+        "Summarize the attached file", "What's the weather in London?", "2 + 2 * 3",<br>
+        or "Write a blog post about AI in education".<br>
+        Steve’s team of AI agents will research, use tools, and provide the best answer.
+    </div>
+    <div class="security">
+        <strong>Security Notice:</strong> <br>
+        Your requests and responses are not stored, but please <u>do not enter personal, sensitive, or confidential information.</u>
     </div>
     <form method="post">
-        <label for="topic">Topic or Question:</label>
+        <label for="topic">Ask Steve:</label>
         <input type="text" id="topic" name="topic" value="{{ topic|default('') }}" required>
-        <button type="submit">Generate</button>
+        <button type="submit">Ask</button>
     </form>
     {% if post %}
         <div class="result">
-            <h2>Generated Blog Post</h2>
+            <h2>Steve's Answer</h2>
             <textarea readonly>{{ post }}</textarea>
         </div>
     {% endif %}
 </div>
 <footer>
     Powered by OpenAI, FastAPI & Render.<br>
-    Please do not submit personal or sensitive information.
+    Site protected with modern security headers.
 </footer>
 </body>
 </html>

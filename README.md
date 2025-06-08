@@ -1,6 +1,7 @@
-# Multi-Agent Blog Generator
+Repo Title: “Ask Steve: Multi-Agent AI Assistant”
 
-This app uses FastAPI, OpenAI GPT-4o, and simple web forms to generate blog posts using multiple AI agents.
+README Description:
+Ask Steve is a multi-agent AI assistant powered by OpenAI and custom tools. It can answer questions, perform calculations, check the weather, summarize files, and generate detailed blog posts or articles on any top
 
 ## Getting Started
 

@@ -1,23 +1,26 @@
-import time  # <-- add this for rate limiting
+import time  # for rate limiting
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from agenttest1.orchestrator import generate_post
 
-app = FastAPI(title="Multi-Agent Blog Generator")
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
+app = FastAPI(title="Ask Steve: Multi-Agent AI Assistant")
 templates = Jinja2Templates(directory="agenttest1/templates")
 
-# --- BEGIN RATE LIMITING CODE ---
-RATE_LIMIT = {}  # Store per-IP counters in-memory
-MAX_REQUESTS = 10  # Each IP allowed this many requests...
-WINDOW = 60  # ...per this many seconds (here, 60 = 1 minute)
+# --- RATE LIMITING CODE ---
+RATE_LIMIT = {}
+MAX_REQUESTS = 10
+WINDOW = 60
 
 
 @app.middleware("http")
 async def rate_limiter(request: Request, call_next):
     ip = request.client.host or "unknown"
-    window = int(time.time() // WINDOW)  # Current window bucket (e.g., "minute")
+    window = int(time.time() // WINDOW)
     key = f"{ip}-{window}"
     RATE_LIMIT.setdefault(key, 0)
     RATE_LIMIT[key] += 1
@@ -26,7 +29,26 @@ async def rate_limiter(request: Request, call_next):
     return await call_next(request)
 
 
-# --- END RATE LIMITING CODE ---
+# --- SECURITY HEADERS MIDDLEWARE ---
+class SecureHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response: Response = await call_next(request)
+        response.headers["Strict-Transport-Security"] = (
+            "max-age=31536000; includeSubDomains"
+        )
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; style-src 'self' 'unsafe-inline';"
+        )
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "geolocation=(), microphone=()"
+        return response
+
+
+app.add_middleware(SecureHeadersMiddleware)
+
+# --- ROUTES ---
 
 
 class PostRequest(BaseModel):
