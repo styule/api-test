@@ -8,3 +8,5 @@ cat > .gitignore << 'EOF'
 # Conversation history
 conversation_log.jsonl
 EOF
+
+__pycache__/
